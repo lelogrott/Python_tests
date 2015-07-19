@@ -8,16 +8,16 @@ class nodeStack(Structure):
     pass
 
 nodeStack._fields_ = [
-    ("dados", c_void_p),
-    ("abaixo", POINTER(nodeStack)),
-    ("acima", POINTER(nodeStack)),
+    ("data", c_void_p),
+    ("below", POINTER(nodeStack)),
+    ("above", POINTER(nodeStack)),
     ]
 
 
 class Stack(Structure):
     _fields_ = [
-        ("tamInfo",c_int),
-        ("topo",POINTER(nodeStack)),
+        ("sizeOfInfo",c_int),
+        ("top",POINTER(nodeStack)),
         ]
 
 foo = POINTER(Stack)()
