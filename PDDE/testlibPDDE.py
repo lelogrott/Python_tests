@@ -1,48 +1,48 @@
 from ctypes import *
 
 
-libPDDE = CDLL('/home/zaphod/Desktop/Python_tests/PDDE/libPDDE1.0')
-print(libPDDE)
+libStack = CDLL('/home/zaphod/Desktop/Python_tests/PDDE/libPDDE1.0')
+print(libStack)
 
-class noPDDE(Structure):
+class nodeStack(Structure):
     pass
 
-noPDDE._fields_ = [
+nodeStack._fields_ = [
     ("dados", c_void_p),
-    ("abaixo", POINTER(noPDDE)),
-    ("acima", POINTER(noPDDE)),
+    ("abaixo", POINTER(nodeStack)),
+    ("acima", POINTER(nodeStack)),
     ]
 
 
-class PDDE(Structure):
+class Stack(Structure):
     _fields_ = [
         ("tamInfo",c_int),
-        ("topo",POINTER(noPDDE)),
+        ("topo",POINTER(nodeStack)),
         ]
 
-foo = POINTER(PDDE)()
+foo = POINTER(Stack)()
 
-libPDDE.cria(byref(foo), sizeof(c_int))
+libStack.cria(byref(foo), sizeof(c_int))
 
 x=c_int(7)
-libPDDE.insere(foo, byref(x))
+libStack.insere(foo, byref(x))
 
-libPDDE.busca(foo, byref(x))
+libStack.busca(foo, byref(x))
 print x
 
 x=c_int(9)
-libPDDE.insere(foo, byref(x))
+libStack.insere(foo, byref(x))
 
-libPDDE.busca(foo, byref(x))
+libStack.busca(foo, byref(x))
 print x
 
-libPDDE.removeElemento(foo, byref(x))
+libStack.removeElemento(foo, byref(x))
 print x
 
-libPDDE.removeElemento(foo, byref(x))
+libStack.removeElemento(foo, byref(x))
 print x
 
-y=libPDDE.testaSeVazia(foo)
+y=libStack.testaSeVazia(foo)
 if y==1:
     print("VAZIA")
 else:
