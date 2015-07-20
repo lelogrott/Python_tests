@@ -1,5 +1,6 @@
 from ctypes import *
 import threading
+import time
 
 libQueue = CDLL('/home/zaphod/Desktop/Python_tests/FDDE/libFDDE1.0')
 print(libQueue)
@@ -58,13 +59,25 @@ else:
     print("NAO VAZIA")
 
 #begin thread tests 
+print '>> THREAD TESTS'
 
+def client(queue, element):
+    print threading.currentThread().getName() + ' Starting'
+    libQueue.insere(queue, element)
+    time.sleep(3)
+    print threading.currentThread().getName() + ' Exiting'
+
+def server(queue, element):
+    #do this function, sincronize threads, use semaphore(?)    
 threads = []
 for i in range(5):
-    t = threading.Thread(target=libQueue.insere, args=(foo,byref(c_int(i))))
+    t = threading.Thread(name="thread - %s"% i,target=client, args=(foo,byref(c_int(i))))
     threads.append(t)
     t.start()
     i+=1
+    
+for i in range(5):
+    threads[i].join()
 
 libQueue.buscaNoInicio(foo, byref(x))
 print x
