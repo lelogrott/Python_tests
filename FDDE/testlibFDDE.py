@@ -1,5 +1,5 @@
 from ctypes import *
-
+import threading
 
 libQueue = CDLL('/home/zaphod/Desktop/Python_tests/FDDE/libFDDE1.0')
 print(libQueue)
@@ -55,4 +55,18 @@ y=libQueue.testaVazia(foo)
 if y==1:
     print("VAZIA")
 else:
-    print("NAO VAZIA")  
+    print("NAO VAZIA")
+
+#begin thread tests 
+
+threads = []
+for i in range(5):
+    t = threading.Thread(target=libQueue.insere, args=(foo,byref(c_int(i))))
+    threads.append(t)
+    t.start()
+    i+=1
+
+libQueue.buscaNoInicio(foo, byref(x))
+print x
+libQueue.buscaNoFim(foo, byref(x))
+print x
